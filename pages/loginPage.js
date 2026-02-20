@@ -4,6 +4,7 @@ export class LoginPage {
     this.emailInput = page.locator('input[placeholder="Email"]');
     this.passwordInput = page.locator('input[placeholder="Password"]');
     this.submitButton = page.locator("button", { hasText: "Login" });
+    this.newArticleLink = page.locator("a", { hasText: "New Article" });
   }
 
   async login(email, password) {
@@ -12,8 +13,6 @@ export class LoginPage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.submitButton.click();
-    await this.page
-      .locator("a", { hasText: "New Article" })
-      .waitFor({ state: "visible" });
+    await this.newArticleLink.waitFor({ state: "visible" });
   }
 }
