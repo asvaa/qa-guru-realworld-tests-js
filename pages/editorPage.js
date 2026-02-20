@@ -1,16 +1,21 @@
 export class EditorPage {
   constructor(page) {
-    this.page             = page;
-    this.titleInput       = page.locator('input[placeholder="Article Title"]');
-    this.descriptionInput = page.locator('input[placeholder="What\'s this article about?"]');
-    this.bodyInput        = page.locator('textarea[placeholder="Write your article (in markdown)"]');
-    this.tagsInput        = page.locator('input[placeholder="Enter tags"]');
-    this.publishButton    = page.locator('button', { hasText: 'Publish Article' });
+    this.page = page;
+    this.titleInput = page.locator('input[placeholder="Article Title"]');
+    this.descriptionInput = page.locator(
+      'input[placeholder="What\'s this article about?"]'
+    );
+    this.bodyInput = page.locator(
+      'textarea[placeholder="Write your article (in markdown)"]'
+    );
+    this.tagsInput = page.locator('input[placeholder="Enter tags"]');
+    this.publishButton = page.locator("button", { hasText: "Publish Article" });
+    this.submitButton = page.locator('button[type="submit"]');
   }
 
   async goto() {
-    await this.page.goto('/#/editor');
-    await this.titleInput.waitFor({ state: 'visible' });
+    await this.page.goto("/#/editor");
+    await this.titleInput.waitFor({ state: "visible" });
   }
 
   async fillAndPublish(title, description, body, tag) {
@@ -18,9 +23,18 @@ export class EditorPage {
     await this.descriptionInput.fill(description);
     await this.bodyInput.fill(body);
     await this.tagsInput.fill(tag);
-    await this.page.keyboard.press('Enter');
+    await this.page.keyboard.press("Enter");
     await this.publishButton.click();
     await this.page.waitForURL(/\/#\/article\/.+/);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState("networkidle");
+  }
+
+  async updateTitle(newTitle) {
+    await this.titleInput.waitFor({ state: "visible" });
+    await this.titleInput.clear();
+    await this.titleInput.fill(newTitle);
+    await this.submitButton.click();
+    await this.page.waitForURL(/\/#\/article\/.+/);
+    await this.page.waitForLoadState("networkidle");
   }
 }
