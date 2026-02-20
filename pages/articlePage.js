@@ -17,6 +17,7 @@ export class ArticlePage {
   }
 
   async clickEdit() {
+    await this.editButton.waitFor({ state: "visible" });
     await this.editButton.click();
     await this.page.waitForURL(/\/#\/editor\/.+/);
   }
