@@ -13,6 +13,7 @@ export class ArticlePage {
     this.commentInput = page.locator(".comment-form textarea");
     this.commentSubmit = page.locator(".comment-form button").last();
     this.commentList = page.locator(".card .card-text");
+    this.navbar = page.locator(".navbar");
   }
 
   async clickEdit() {
@@ -23,7 +24,7 @@ export class ArticlePage {
   async clickDelete() {
     await this.deleteButton.waitFor({ state: "visible" });
     await this.deleteButton.click();
-    await this.page.locator(".navbar").waitFor({ state: "visible" });
+    await this.navbar.waitFor({ state: "visible" });
   }
 
   async addComment(text) {
@@ -34,11 +35,5 @@ export class ArticlePage {
   async clickLike() {
     await this.likeButton.click();
     await this.page.waitForLoadState("networkidle");
-  }
-
-  async getLikeCount() {
-    const text = await this.likeButton.textContent();
-    const match = text.match(/\d+/);
-    return match ? parseInt(match[0], 10) : 0;
   }
 }
